@@ -1,7 +1,7 @@
 {
   "name": "@altcha/crypto",
   "version": "0.0.1",
-  "description": "A small library simplifying asymetric data encryption with Web Crypto.",
+  "description": "A lightweight library simplifying asymmetric data encryption using Web Crypto",
   "author": "Daniel Regeci",
   "license": "MIT",
   "keywords": [
@@ -51,6 +51,10 @@
     "./helpers": {
       "types": "./dist/helpers.d.ts",
       "import": "./dist/helpers.js"
+    },
+    "./node-cipher": {
+      "types": "./dist/node-cipher.d.ts",
+      "import": "./dist/node-cipher.js"
     },
     "./rsa": {
       "types": "./dist/rsa.d.ts",

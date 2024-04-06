@@ -17,3 +17,11 @@ export function base64Encode(ua, urlSafe = false) {
     }
     return b64;
 }
+export function arrayBufferToHex(ua) {
+    if (ua instanceof ArrayBuffer) {
+        ua = new Uint8Array(ua);
+    }
+    return Array.from(ua)
+        .map((b) => b.toString(16).padStart(2, '0'))
+        .join('');
+}

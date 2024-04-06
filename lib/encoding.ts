@@ -1,7 +1,7 @@
 export default {
   base64Decode,
   base64Encode,
-}
+};
 
 export function base64Decode(b64: string, urlSafe: boolean = false) {
   if (urlSafe) {
@@ -18,4 +18,13 @@ export function base64Encode(ua: Uint8Array, urlSafe: boolean = false) {
     return b64.replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
   }
   return b64;
+}
+
+export function arrayBufferToHex(ua: ArrayBuffer | Uint8Array) {
+  if (ua instanceof ArrayBuffer) {
+    ua = new Uint8Array(ua);
+  }
+  return Array.from(ua as Uint8Array)
+    .map((b) => b.toString(16).padStart(2, '0'))
+    .join('');
 }

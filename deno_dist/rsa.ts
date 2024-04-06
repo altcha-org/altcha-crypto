@@ -1,4 +1,4 @@
-import { base64Encode } from './encoding.ts';
+import { arrayBufferToHex, base64Encode } from './encoding.ts';
 import { convertPemToUint8Array, wrapLines } from './helpers.ts';
 
 const ALG = 'RSA-OAEP';
@@ -17,6 +17,7 @@ export default {
   exportPrivateKeyPem,
   exportPublicKey,
   exportPublicKeyPem,
+  exportPublicKeyFromPrivateKey,
   importPrivateKey,
   importPrivateKeyPem,
   importPublicKey,
@@ -116,4 +117,32 @@ export async function importPrivateKey(key: Uint8Array) {
 
 export async function importPrivateKeyPem(pem: string) {
   return importPrivateKey(convertPemToUint8Array(pem));
+}
+
+export async function exportPublicKeyFromPrivateKey(privateKey: CryptoKey) {
+  const jwk = await crypto.subtle.exportKey('jwk', privateKey);
+  delete jwk.d;
+  delete jwk.dp;
+  delete jwk.dq;
+  delete jwk.q;
+  delete jwk.qi;
+  jwk.key_ops = ['encrypt'];
+  const pubKey = await crypto.subtle.importKey(
+    'jwk',
+    jwk,
+    {
+      name: ALG,
+      hash: HASH,
+    },
+    true,
+    ['encrypt']
+  );
+  return exportPublicKey(pubKey);
+}
+
+export async function getPublicKeyId(pubKeyBytes: Uint8Array) {
+  const hash = arrayBufferToHex(
+    await crypto.subtle.digest('SHA-256', pubKeyBytes)
+  );
+  return hash.slice(0, 8).match(/.{2}/g)!.join(':').toUpperCase();
 }

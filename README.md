@@ -1,12 +1,12 @@
 # ALTCHA JS Crypto Library
 
-A small library simplifying asymetric data encryption using Web Crypto. Based on hybrid approach with RSA keys and AES encryption.
+A lightweight library simplifying asymmetric data encryption using Web Crypto. It employs a hybrid approach combining RSA keys and AES encryption for enhanced security.
 
 ## Features
 
-- Easy-to-use hybrid encryption using RSA + AES
-- Supports all modern browsers with Web Crypto
-- Supports node.js streams, making it suitable for encrypting large files
+- Simplified hybrid encryption using RSA + AES
+- Compatible with all modern browsers supporting Web Crypto
+- Supports node.js streams, facilitating encryption of large files
 
 ## Compatibility
 
@@ -18,7 +18,7 @@ A small library simplifying asymetric data encryption using Web Crypto. Based on
 ## Usage
 
 ```ts
-import { cipher, rsa } from 'altcha-crypto';
+import { cipher, rsa } from '@altcha/crypto';
 
 const keyPair = await rsa.generateKeyPair();
 
@@ -31,7 +31,7 @@ Node.js streams:
 
 ```ts
 import { createReadStream, createWriteStream } from 'node:fs';
-import { nodeCipher, rsa } from 'altcha-crypto';
+import { nodeCipher, rsa } from '@altcha/crypto';
 
 const keyPair = await rsa.generateKeyPair();
 

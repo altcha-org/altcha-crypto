@@ -1,7 +1,7 @@
 import { describe, test, expect, beforeAll } from 'vitest';
 import { PassThrough, Readable } from 'node:stream';
 import { decryptStream, encryptStream } from '../lib/node-cipher.js';
-import { encrypt } from '../lib/cipher.js';
+import { encrypt, decrypt } from '../lib/cipher.js';
 import { generateKeyPair } from '../lib/rsa.js';
 
 async function streamToBuffer(stream: Readable) {
@@ -37,5 +37,18 @@ describe('Node stream cipher', () => {
     decryptStream(keyPair.privateKey, input, output);
     const result = await streamToBuffer(output);
     expect(result.toString()).toEqual(message);
+  });
+
+  test('should be able to decrypt using sync api', async () => {
+    const input = Readable.from(Buffer.from(message));
+    const output = new PassThrough();
+    encryptStream(keyPair.publicKey, input, output);
+    const buf = await streamToBuffer(output);
+    const ua = new Uint8Array(
+      buf.buffer.slice(buf.byteOffset, buf.byteOffset + buf.byteLength)
+    );
+    const result = await decrypt(keyPair.privateKey, ua);
+    expect(result).toBeInstanceOf(Uint8Array);
+    expect(new TextDecoder().decode(result)).toEqual(message);
   });
 });

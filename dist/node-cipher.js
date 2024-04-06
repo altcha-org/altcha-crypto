@@ -19,7 +19,21 @@ export async function encryptStream(publicKeyRSA, input, output) {
         ...encKey,
         ...iv,
     ]));
-    return pipeline(input, cipher, output);
+    return new Promise((resolve, reject) => {
+        output.on('finish', resolve);
+        cipher.on('data', (chunk) => {
+            output.write(chunk);
+        });
+        input.on('end', () => {
+            cipher.end();
+            output.write(cipher.getAuthTag());
+            output.end();
+        });
+        input.on('error', reject);
+        input.on('data', (chunk) => {
+            cipher.write(chunk);
+        });
+    });
 }
 export async function decryptStream(privateKeyRSA, input, output) {
     let decipher = null;

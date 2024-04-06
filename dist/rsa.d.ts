@@ -6,6 +6,7 @@ declare const _default: {
     exportPrivateKeyPem: typeof exportPrivateKeyPem;
     exportPublicKey: typeof exportPublicKey;
     exportPublicKeyPem: typeof exportPublicKeyPem;
+    exportPublicKeyFromPrivateKey: typeof exportPublicKeyFromPrivateKey;
     importPrivateKey: typeof importPrivateKey;
     importPrivateKeyPem: typeof importPrivateKeyPem;
     importPublicKey: typeof importPublicKey;
@@ -23,3 +24,5 @@ export declare function importPublicKey(key: Uint8Array): Promise<CryptoKey>;
 export declare function importPublicKeyPem(pem: string): Promise<CryptoKey>;
 export declare function importPrivateKey(key: Uint8Array): Promise<CryptoKey>;
 export declare function importPrivateKeyPem(pem: string): Promise<CryptoKey>;
+export declare function exportPublicKeyFromPrivateKey(privateKey: CryptoKey): Promise<Uint8Array>;
+export declare function getPublicKeyId(pubKeyBytes: Uint8Array): Promise<string>;

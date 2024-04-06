@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.importPrivateKeyPem = exports.importPrivateKey = exports.importPublicKeyPem = exports.importPublicKey = exports.exportPrivateKeyPem = exports.exportPublicKeyPem = exports.exportPrivateKey = exports.exportPublicKey = exports.decrypt = exports.encrypt = exports.generateKeyPair = void 0;
+exports.getPublicKeyId = exports.exportPublicKeyFromPrivateKey = exports.importPrivateKeyPem = exports.importPrivateKey = exports.importPublicKeyPem = exports.importPublicKey = exports.exportPrivateKeyPem = exports.exportPublicKeyPem = exports.exportPrivateKey = exports.exportPublicKey = exports.decrypt = exports.encrypt = exports.generateKeyPair = void 0;
 const encoding_js_1 = require("./encoding.js");
 const helpers_js_1 = require("./helpers.js");
 const ALG = 'RSA-OAEP';
@@ -15,6 +15,7 @@ exports.default = {
     exportPrivateKeyPem,
     exportPublicKey,
     exportPublicKeyPem,
+    exportPublicKeyFromPrivateKey,
     importPrivateKey,
     importPrivateKeyPem,
     importPublicKey,
@@ -83,3 +84,23 @@ async function importPrivateKeyPem(pem) {
     return importPrivateKey((0, helpers_js_1.convertPemToUint8Array)(pem));
 }
 exports.importPrivateKeyPem = importPrivateKeyPem;
+async function exportPublicKeyFromPrivateKey(privateKey) {
+    const jwk = await crypto.subtle.exportKey('jwk', privateKey);
+    delete jwk.d;
+    delete jwk.dp;
+    delete jwk.dq;
+    delete jwk.q;
+    delete jwk.qi;
+    jwk.key_ops = ['encrypt'];
+    const pubKey = await crypto.subtle.importKey('jwk', jwk, {
+        name: ALG,
+        hash: HASH,
+    }, true, ['encrypt']);
+    return exportPublicKey(pubKey);
+}
+exports.exportPublicKeyFromPrivateKey = exportPublicKeyFromPrivateKey;
+async function getPublicKeyId(pubKeyBytes) {
+    const hash = (0, encoding_js_1.arrayBufferToHex)(await crypto.subtle.digest('SHA-256', pubKeyBytes));
+    return hash.slice(0, 8).match(/.{2}/g).join(':').toUpperCase();
+}
+exports.getPublicKeyId = getPublicKeyId;

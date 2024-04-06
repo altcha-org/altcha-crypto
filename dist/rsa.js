@@ -1,4 +1,4 @@
-import { base64Encode } from './encoding.js';
+import { arrayBufferToHex, base64Encode } from './encoding.js';
 import { convertPemToUint8Array, wrapLines } from './helpers.js';
 const ALG = 'RSA-OAEP';
 const HASH = 'SHA-256';
@@ -12,6 +12,7 @@ export default {
     exportPrivateKeyPem,
     exportPublicKey,
     exportPublicKeyPem,
+    exportPublicKeyFromPrivateKey,
     importPrivateKey,
     importPrivateKeyPem,
     importPublicKey,
@@ -68,4 +69,22 @@ export async function importPrivateKey(key) {
 }
 export async function importPrivateKeyPem(pem) {
     return importPrivateKey(convertPemToUint8Array(pem));
+}
+export async function exportPublicKeyFromPrivateKey(privateKey) {
+    const jwk = await crypto.subtle.exportKey('jwk', privateKey);
+    delete jwk.d;
+    delete jwk.dp;
+    delete jwk.dq;
+    delete jwk.q;
+    delete jwk.qi;
+    jwk.key_ops = ['encrypt'];
+    const pubKey = await crypto.subtle.importKey('jwk', jwk, {
+        name: ALG,
+        hash: HASH,
+    }, true, ['encrypt']);
+    return exportPublicKey(pubKey);
+}
+export async function getPublicKeyId(pubKeyBytes) {
+    const hash = arrayBufferToHex(await crypto.subtle.digest('SHA-256', pubKeyBytes));
+    return hash.slice(0, 8).match(/.{2}/g).join(':').toUpperCase();
 }

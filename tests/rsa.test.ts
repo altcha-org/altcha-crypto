@@ -5,8 +5,10 @@ import {
   exportPrivateKeyPem,
   exportPublicKey,
   exportPublicKeyPem,
+  exportPublicKeyFromPrivateKey,
   generateKeyPair,
 } from '../lib/rsa.js';
+import { base64Encode } from '../lib/encoding.js';
 
 describe('RSA', () => {
   describe('generateKeyPair()', () => {
@@ -22,6 +24,13 @@ describe('RSA', () => {
 
     beforeEach(async () => {
       keyPair = await generateKeyPair();
+    });
+
+    it('should extract public key', async () => {
+      const knownPubKey = await exportPublicKey(keyPair.publicKey);
+      const pubKey = await exportPublicKeyFromPrivateKey(keyPair.privateKey);
+      expect(pubKey).toBeTruthy();
+      expect(base64Encode(knownPubKey)).toEqual(base64Encode(pubKey));
     });
 
     describe('exportPrivateKey()', () => {

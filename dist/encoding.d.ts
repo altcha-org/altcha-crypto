@@ -5,3 +5,4 @@ declare const _default: {
 export default _default;
 export declare function base64Decode(b64: string, urlSafe?: boolean): Uint8Array;
 export declare function base64Encode(ua: Uint8Array, urlSafe?: boolean): string;
+export declare function arrayBufferToHex(ua: ArrayBuffer | Uint8Array): string;
