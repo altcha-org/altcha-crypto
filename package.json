@@ -22,7 +22,7 @@
     "eslint": "eslint ./lib/**/*",
     "format": "prettier --write './(lib|tests)/**/*'",
     "test": "vitest --run",
-    "test:deno": "deno --unstable-sloppy-imports test tests/deno.ts",
+    "test:deno": "deno test --unstable-sloppy-imports tests/deno.ts",
     "prepare": "husky"
   },
   "files": [
