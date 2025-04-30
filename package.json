@@ -1,6 +1,6 @@
 {
   "name": "@altcha/crypto",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A lightweight library simplifying asymmetric data encryption using Web Crypto",
   "author": "Daniel Regeci",
   "license": "MIT",
@@ -38,31 +38,38 @@
     },
     "./aes": {
       "types": "./dist/aes.d.ts",
-      "import": "./dist/aes.js"
+      "import": "./dist/aes.js",
+      "require": "./cjs/dist/aes.js"
     },
     "./cipher": {
       "types": "./dist/cipher.d.ts",
-      "import": "./dist/cipher.js"
+      "import": "./dist/cipher.js",
+      "require": "./cjs/dist/cipher.js"
     },
     "./encoding": {
       "types": "./dist/encoding.d.ts",
-      "import": "./dist/encoding.js"
+      "import": "./dist/encoding.js",
+      "require": "./cjs/dist/encoding.js"
     },
     "./helpers": {
       "types": "./dist/helpers.d.ts",
-      "import": "./dist/helpers.js"
+      "import": "./dist/helpers.js",
+      "require": "./cjs/dist/helpers.js"
     },
     "./node-cipher": {
       "types": "./dist/node-cipher.d.ts",
-      "import": "./dist/node-cipher.js"
+      "import": "./dist/node-cipher.js",
+      "require": "./cjs/dist/node-cipher.js"
     },
     "./rsa": {
       "types": "./dist/rsa.d.ts",
-      "import": "./dist/rsa.js"
+      "import": "./dist/rsa.js",
+      "require": "./cjs/dist/rsa.js"
     },
     "./types": {
       "types": "./dist/types.d.ts",
-      "import": "./dist/types.js"
+      "import": "./dist/types.js",
+      "require": "./cjs/dist/types.js"
     }
   },
   "typesVersions": {
