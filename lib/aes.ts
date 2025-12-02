@@ -24,7 +24,7 @@ export async function exportKey(key: CryptoKey) {
 export async function importKey(key: Uint8Array) {
   return crypto.subtle.importKey(
     'raw',
-    key,
+    key as BufferSource,
     {
       name: 'AES-GCM',
     },
@@ -46,7 +46,7 @@ export async function encrypt(
         iv,
       },
       key,
-      data
+      data as BufferSource
     )
   );
   return {
@@ -64,10 +64,10 @@ export async function decrypt(
     await crypto.subtle.decrypt(
       {
         name: 'AES-GCM',
-        iv,
+        iv: iv as BufferSource,
       },
       key,
-      data
+      data as BufferSource
     )
   );
 }
