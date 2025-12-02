@@ -1,6 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.arrayBufferToHex = exports.base64Encode = exports.base64Decode = void 0;
+exports.base64Decode = base64Decode;
+exports.base64Encode = base64Encode;
+exports.arrayBufferToHex = arrayBufferToHex;
 exports.default = {
     base64Decode,
     base64Encode,
@@ -13,7 +15,6 @@ function base64Decode(b64, urlSafe = false) {
     }
     return Uint8Array.from(atob(b64), (c) => c.charCodeAt(0));
 }
-exports.base64Decode = base64Decode;
 function base64Encode(ua, urlSafe = false) {
     const b64 = btoa(String.fromCharCode(...ua));
     if (urlSafe) {
@@ -21,7 +22,6 @@ function base64Encode(ua, urlSafe = false) {
     }
     return b64;
 }
-exports.base64Encode = base64Encode;
 function arrayBufferToHex(ua) {
     if (ua instanceof ArrayBuffer) {
         ua = new Uint8Array(ua);
@@ -30,4 +30,3 @@ function arrayBufferToHex(ua) {
         .map((b) => b.toString(16).padStart(2, '0'))
         .join('');
 }
-exports.arrayBufferToHex = arrayBufferToHex;

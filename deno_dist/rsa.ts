@@ -44,7 +44,7 @@ export async function encrypt(publicKey: CryptoKey, data: Uint8Array) {
         name: ALG,
       },
       publicKey,
-      data
+      data as BufferSource
     )
   );
 }
@@ -56,7 +56,7 @@ export async function decrypt(privateKey: CryptoKey, data: Uint8Array) {
         name: ALG,
       },
       privateKey,
-      data
+      data as BufferSource
     )
   );
 }
@@ -88,7 +88,7 @@ export async function exportPrivateKeyPem(key: CryptoKey) {
 export async function importPublicKey(key: Uint8Array) {
   return crypto.subtle.importKey(
     'spki',
-    key,
+    key as BufferSource,
     {
       name: ALG,
       hash: HASH,
@@ -105,7 +105,7 @@ export async function importPublicKeyPem(pem: string) {
 export async function importPrivateKey(key: Uint8Array) {
   return crypto.subtle.importKey(
     'pkcs8',
-    key,
+    key as BufferSource,
     {
       name: ALG,
       hash: HASH,
@@ -142,7 +142,7 @@ export async function exportPublicKeyFromPrivateKey(privateKey: CryptoKey) {
 
 export async function getPublicKeyId(pubKeyBytes: Uint8Array) {
   const hash = arrayBufferToHex(
-    await crypto.subtle.digest('SHA-256', pubKeyBytes)
+    await crypto.subtle.digest('SHA-256', pubKeyBytes as BufferSource)
   );
   return hash.slice(0, 8).match(/.{2}/g)!.join(':').toUpperCase();
 }

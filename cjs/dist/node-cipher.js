@@ -3,7 +3,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.decryptStream = exports.encryptStream = void 0;
+exports.encryptStream = encryptStream;
+exports.decryptStream = decryptStream;
 const node_crypto_1 = require("node:crypto");
 const promises_1 = require("node:stream/promises");
 const aes_js_1 = __importDefault(require("./aes.js"));
@@ -41,7 +42,6 @@ async function encryptStream(publicKeyRSA, input, output) {
         });
     });
 }
-exports.encryptStream = encryptStream;
 async function decryptStream(privateKeyRSA, input, output) {
     let decipher = null;
     return new Promise((resolve, reject) => {
@@ -94,4 +94,3 @@ async function decryptStream(privateKeyRSA, input, output) {
         });
     });
 }
-exports.decryptStream = decryptStream;

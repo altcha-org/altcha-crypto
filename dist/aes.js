@@ -33,6 +33,6 @@ export async function encrypt(key, data, ivLen = 16) {
 export async function decrypt(key, data, iv) {
     return new Uint8Array(await crypto.subtle.decrypt({
         name: 'AES-GCM',
-        iv,
+        iv: iv,
     }, key, data));
 }

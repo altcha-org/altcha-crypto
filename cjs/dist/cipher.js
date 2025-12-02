@@ -3,7 +3,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.readHead = exports.decrypt = exports.encrypt = exports.AES_IV_LEN = exports.AES_KEY_LEN = exports.START_BYTES = void 0;
+exports.AES_IV_LEN = exports.AES_KEY_LEN = exports.START_BYTES = void 0;
+exports.encrypt = encrypt;
+exports.decrypt = decrypt;
+exports.readHead = readHead;
 const aes_js_1 = __importDefault(require("./aes.js"));
 const rsa_js_1 = __importDefault(require("./rsa.js"));
 const helpers_js_1 = require("./helpers.js");
@@ -29,7 +32,6 @@ async function encrypt(publicKeyRSA, data, options = {}) {
         ...encrypted,
     ]);
 }
-exports.encrypt = encrypt;
 async function decrypt(privateKeyRSA, data) {
     const { encKey, iv, startBytes, tail } = readHead(data);
     if (!(0, helpers_js_1.compareByteArrays)(exports.START_BYTES, startBytes)) {
@@ -38,7 +40,6 @@ async function decrypt(privateKeyRSA, data) {
     const key = await rsa_js_1.default.decrypt(privateKeyRSA, encKey);
     return aes_js_1.default.decrypt(await aes_js_1.default.importKey(key), tail, iv);
 }
-exports.decrypt = decrypt;
 function readHead(data) {
     const view = new DataView(data.buffer);
     const startBytes = data.subarray(0, exports.START_BYTES.length);
@@ -55,4 +56,3 @@ function readHead(data) {
         tail,
     };
 }
-exports.readHead = readHead;

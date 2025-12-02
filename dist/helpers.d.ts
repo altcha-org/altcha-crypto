@@ -5,5 +5,5 @@ declare const _default: {
 };
 export default _default;
 export declare function wrapLines(str: string, lineWidth?: number): string;
-export declare function convertPemToUint8Array(pem: string): Uint8Array;
+export declare function convertPemToUint8Array(pem: string): Uint8Array<ArrayBuffer>;
 export declare function compareByteArrays(a: Uint8Array, b: Uint8Array): boolean;
